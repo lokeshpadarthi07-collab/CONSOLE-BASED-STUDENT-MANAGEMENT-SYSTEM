@@ -1,0 +1,5 @@
+student_id,name,age,email,phone,course,year,department,gpa
+S101,Alex Morgan,20,alex.morgan@university.edu,+1-555-0192,B.Tech Computer Science,3rd Year,Computer Science,3.85
+S102,Sophia Chen,21,sophia.chen@university.edu,+1-555-0184,B.Sc Data Science,4th Year,Information Technology,3.92
+S103,Marcus Johnson,19,marcus.j@university.edu,+1-555-0143,B.E Electronics,2nd Year,Electrical Eng.,3.45
+S104,Emily Watson,22,emily.watson@university.edu,+1-555-0177,M.Tech AI & Robotics,1st Year,Artificial Intelligence,4.0

@@ -1,0 +1,46 @@
+[
+    {
+        "student_id": "S101",
+        "name": "Alex Morgan",
+        "age": 20,
+        "email": "alex.morgan@university.edu",
+        "phone": "+1-555-0192",
+        "course": "B.Tech Computer Science",
+        "year": "3rd Year",
+        "department": "Computer Science",
+        "gpa": 3.85
+    },
+    {
+        "student_id": "S102",
+        "name": "Sophia Chen",
+        "age": 21,
+        "email": "sophia.chen@university.edu",
+        "phone": "+1-555-0184",
+        "course": "B.Sc Data Science",
+        "year": "4th Year",
+        "department": "Information Technology",
+        "gpa": 3.92
+    },
+    {
+        "student_id": "S103",
+        "name": "Marcus Johnson",
+        "age": 19,
+        "email": "marcus.j@university.edu",
+        "phone": "+1-555-0143",
+        "course": "B.E Electronics",
+        "year": "2nd Year",
+        "department": "Electrical Eng.",
+        "gpa": 3.45
+    },
+    {
+        "student_id": "S104",
+        "name": "Emily Watson",
+        "age": 22,
+        "email": "emily.watson@university.edu",
+        "phone": "+1-555-0177",
+        "course": "M.Tech AI & Robotics",
+        "year": "1st Year",
+        "department": "Artificial Intelligence",
+        "gpa": 4.0
+    }
+]
