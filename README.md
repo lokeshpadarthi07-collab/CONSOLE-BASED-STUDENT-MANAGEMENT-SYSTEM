@@ -193,12 +193,19 @@ OK
 
 ## 📸 Screenshots
 
-Add your application execution screenshots into the `screenshots/` directory for GitHub presentation:
+Below are screenshots demonstrating the application views and unit test execution:
 
-- `screenshots/main_menu.png`: Main menu view
-- `screenshots/display_students.png`: Displaying student records table
-- `screenshots/add_student.png`: Adding a student with validation
-- `screenshots/unit_tests.png`: Running unit tests
+### 1. Main Menu
+![Main Menu](screenshots/main_menu.png)
+
+### 2. Display All Students Table
+![Display All Students](screenshots/display_students.png)
+
+### 3. Add Student Form & Validation
+![Add Student](screenshots/add_student.png)
+
+### 4. Unit Test Suite Execution
+![Unit Tests](screenshots/unit_tests.png)
 
 ---
 
