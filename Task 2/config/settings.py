@@ -5,11 +5,16 @@ Generated for Task 2 - Database-Driven Student Management System.
 """
 
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Ensure BASE_DIR is in sys.path for serverless Vercel execution
+if str(BASE_DIR) not in sys.path:
+    sys.path.insert(0, str(BASE_DIR))
 
 # Load environment variables from .env file
 load_dotenv(BASE_DIR / '.env')
@@ -69,17 +74,25 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database Configuration
 # Requirement 3: Configure PostgreSQL using Environment Variables
-# Sensitive information loaded from .env file
 DB_NAME = os.getenv('DB_NAME', 'student_db')
 DB_USER = os.getenv('DB_USER', 'postgres')
 DB_PASSWORD = os.getenv('DB_PASSWORD', 'postgres')
 DB_HOST = os.getenv('DB_HOST', 'localhost')
 DB_PORT = os.getenv('DB_PORT', '5432')
 
-# Determine engine: allow sqlite fallback if specified in .env (e.g. USE_SQLITE=True)
+# Check if environment is Vercel serverless
+IS_VERCEL = 'VERCEL' in os.environ or os.getenv('VERCEL') == '1'
 USE_SQLITE = os.getenv('USE_SQLITE', 'False').lower() in ('true', '1', 't')
 
-if USE_SQLITE:
+if IS_VERCEL and (USE_SQLITE or DB_HOST in ('localhost', '127.0.0.1') or not os.getenv('DB_HOST')):
+    # On Vercel without remote PostgreSQL credentials, use writable /tmp SQLite db
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/tmp/db.sqlite3',
+        }
+    }
+elif USE_SQLITE:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
