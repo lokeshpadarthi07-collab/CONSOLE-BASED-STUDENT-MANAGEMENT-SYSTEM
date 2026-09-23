@@ -23,7 +23,8 @@ staticfiles/
 *.swp
 *.swo
 
-# Testing / Coverage
+# Testing / Scratch
 .pytest_cache/
 .coverage
 htmlcov/
+scratch/
