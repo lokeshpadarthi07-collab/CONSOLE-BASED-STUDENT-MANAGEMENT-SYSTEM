@@ -3,11 +3,14 @@
 [![Python](https://img.shields.io/badge/Python-3.14%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/Django-5.2-092E20.svg?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-4169E1.svg?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Vercel](https://img.shields.io/badge/Vercel-Live%20Demo-000000.svg?logo=vercel&logoColor=white)](https://console-based-student-management-sy-puce.vercel.app/)
 [![Tests](https://img.shields.io/badge/Tests-17%20Passed-10B981.svg)](https://pytest.org/)
 [![License](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
 
 > **Python Full Stack Development Internship — Task 2**  
-> A full-stack, database-driven Web Application built with **Django 5**, **PostgreSQL**, **Django ORM**, **HTML5/CSS3 (Glassmorphism Design)**, and **Pytest/Unittest**.
+> A full-stack, database-driven Web Application built with **Django 5**, **PostgreSQL**, **Django ORM**, **HTML5/CSS3 (Glassmorphism Design)**, and **Pytest/Unittest**.  
+> 🌐 **Live Demo**: [https://console-based-student-management-sy-puce.vercel.app/](https://console-based-student-management-sy-puce.vercel.app/)
+
 
 ---
 
