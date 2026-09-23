@@ -1,0 +1,29 @@
+# Python
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Environment Variables & Secrets
+.env
+.env.local
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# IDE / Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing / Coverage
+.pytest_cache/
+.coverage
+htmlcov/

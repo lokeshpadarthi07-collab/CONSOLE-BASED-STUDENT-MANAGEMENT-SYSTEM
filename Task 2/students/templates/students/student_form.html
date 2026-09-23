@@ -1,0 +1,200 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ title }} - Student Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .form-group.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .form-label {
+        font-size: 0.88rem;
+        font-weight: 600;
+        color: var(--text-muted);
+    }
+
+    .form-label span.required {
+        color: var(--danger);
+    }
+
+    .form-input, .form-select {
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: var(--text-main);
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+    .form-input:focus, .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    }
+
+    .form-select option {
+        background: #1e293b;
+        color: var(--text-main);
+    }
+
+    .field-error {
+        color: var(--danger);
+        font-size: 0.82rem;
+        margin-top: 0.2rem;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .help-text {
+        font-size: 0.78rem;
+        color: var(--text-muted);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+    <div class="form-header">
+        <h2>{{ title }}</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.3rem;">
+            Please fill in the details below. All fields marked with (<span style="color: var(--danger);">*</span>) are required.
+        </p>
+    </div>
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-error">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-grid">
+            <!-- Student ID -->
+            <div class="form-group">
+                <label for="{{ form.student_id.id_for_label }}" class="form-label">
+                    Student ID <span class="required">*</span>
+                </label>
+                {{ form.student_id }}
+                {% if form.student_id.help_text %}
+                    <span class="help-text">{{ form.student_id.help_text }}</span>
+                {% endif %}
+                {% for error in form.student_id.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}" class="form-label">
+                    Email Address <span class="required">*</span>
+                </label>
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- First Name -->
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                    First Name <span class="required">*</span>
+                </label>
+                {{ form.first_name }}
+                {% for error in form.first_name.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                    Last Name <span class="required">*</span>
+                </label>
+                {{ form.last_name }}
+                {% for error in form.last_name.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Phone -->
+            <div class="form-group">
+                <label for="{{ form.phone.id_for_label }}" class="form-label">
+                    Phone Number <span class="required">*</span>
+                </label>
+                {{ form.phone }}
+                {% for error in form.phone.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Date of Birth -->
+            <div class="form-group">
+                <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">
+                    Date of Birth <span class="required">*</span>
+                </label>
+                {{ form.date_of_birth }}
+                {% for error in form.date_of_birth.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Course -->
+            <div class="form-group">
+                <label for="{{ form.course.id_for_label }}" class="form-label">
+                    Course / Major <span class="required">*</span>
+                </label>
+                {{ form.course }}
+                {% for error in form.course.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <!-- Academic Year -->
+            <div class="form-group">
+                <label for="{{ form.year.id_for_label }}" class="form-label">
+                    Academic Year <span class="required">*</span>
+                </label>
+                {{ form.year }}
+                {% for error in form.year.errors %}
+                    <div class="field-error">{{ error }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a href="{% if is_create %}{% url 'student_list' %}{% else %}{% url 'student_detail' student.pk %}{% endif %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

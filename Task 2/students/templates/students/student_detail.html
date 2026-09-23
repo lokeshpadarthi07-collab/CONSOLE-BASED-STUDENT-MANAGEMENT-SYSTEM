@@ -1,0 +1,135 @@
+{% extends 'students/base.html' %}
+
+{% block title %}{{ student.full_name }} - Student Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .profile-card {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid var(--card-border);
+        margin-bottom: 1.5rem;
+    }
+
+    .avatar-large {
+        width: 72px;
+        height: 72px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: white;
+        font-weight: 700;
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    }
+
+    .profile-title-group h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.25rem;
+        margin-bottom: 2rem;
+    }
+
+    .detail-item {
+        background: rgba(15, 23, 42, 0.5);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+    }
+
+    .detail-label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.35rem;
+    }
+
+    .detail-value {
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--text-main);
+    }
+
+    .profile-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+    }
+
+    .badge-large {
+        padding: 0.35rem 0.85rem;
+        font-size: 0.85rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="glass-card profile-card">
+    <div class="profile-header">
+        <div class="avatar-large">
+            {{ student.first_name|first }}{{ student.last_name|first }}
+        </div>
+        <div class="profile-title-group">
+            <h1>{{ student.full_name }}</h1>
+            <div style="display: flex; gap: 0.5rem; align-items: center; margin-top: 0.35rem;">
+                <span class="badge badge-primary badge-large">{{ student.student_id }}</span>
+                <span class="badge badge-info badge-large">{{ student.get_year_display }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <div class="detail-label">Email Address</div>
+            <div class="detail-value">{{ student.email }}</div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">Phone Number</div>
+            <div class="detail-value">{{ student.phone }}</div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">Course / Major</div>
+            <div class="detail-value">{{ student.course }}</div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">Date of Birth</div>
+            <div class="detail-value">{{ student.date_of_birth|date:"F j, Y" }}</div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">Record Created</div>
+            <div class="detail-value">{{ student.created_at|date:"M j, Y - H:i" }}</div>
+        </div>
+
+        <div class="detail-item">
+            <div class="detail-label">Last Updated</div>
+            <div class="detail-value">{{ student.updated_at|date:"M j, Y - H:i" }}</div>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'student_list' %}" class="btn btn-secondary">← Back to List</a>
+        <a href="{% url 'student_update' student.pk %}" class="btn btn-primary">✏️ Edit Record</a>
+        <a href="{% url 'student_delete' student.pk %}" class="btn btn-danger">🗑 Delete Record</a>
+    </div>
+</div>
+{% endblock %}

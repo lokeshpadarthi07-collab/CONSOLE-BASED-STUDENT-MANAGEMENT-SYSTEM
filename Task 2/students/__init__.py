@@ -1,0 +1,3 @@
+"""
+Students app initialization module.
+"""

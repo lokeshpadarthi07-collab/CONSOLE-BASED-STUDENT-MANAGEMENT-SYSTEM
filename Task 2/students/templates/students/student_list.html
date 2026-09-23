@@ -1,0 +1,291 @@
+{% extends 'students/base.html' %}
+
+{% block title %}Student Directory - Student Management System{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid var(--card-border);
+        border-radius: 12px;
+        padding: 1.25rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+        margin-bottom: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .search-form {
+        display: flex;
+        gap: 0.75rem;
+        flex: 1;
+        flex-wrap: wrap;
+    }
+
+    .form-input-sm, .form-select-sm {
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        color: var(--text-main);
+        padding: 0.6rem 1rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        outline: none;
+    }
+
+    .form-input-sm:focus, .form-select-sm:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    .form-input-sm {
+        flex: 1;
+        min-width: 220px;
+    }
+
+    .form-select-sm option {
+        background: #1e293b;
+        color: var(--text-main);
+    }
+
+    /* Table */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+    }
+
+    .data-table th {
+        background: rgba(15, 23, 42, 0.5);
+        padding: 1rem 1.25rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        border-bottom: 1px solid var(--card-border);
+    }
+
+    .data-table td {
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 0.95rem;
+        vertical-align: middle;
+    }
+
+    .data-table tbody tr:hover {
+        background: rgba(255, 255, 255, 0.03);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.65rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
+    }
+
+    .badge-primary {
+        background: rgba(99, 102, 241, 0.2);
+        color: #818cf8;
+        border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .badge-info {
+        background: rgba(6, 182, 212, 0.2);
+        color: #22d3ee;
+        border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .action-group {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+        color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Student Directory</h1>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
+            Manage, search, and inspect student records stored in PostgreSQL.
+        </p>
+    </div>
+    <a href="{% url 'student_create' %}" class="btn btn-primary">+ Register New Student</a>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div>
+            <div class="stat-value">{{ all_students_count }}</div>
+            <div class="stat-label">Total Students</div>
+        </div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🔍</div>
+        <div>
+            <div class="stat-value">{{ total_count }}</div>
+            <div class="stat-label">Matching Records</div>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filters -->
+<div class="glass-card filter-bar">
+    <form method="GET" action="{% url 'student_list' %}" class="search-form">
+        <input 
+            type="text" 
+            name="q" 
+            value="{{ query }}" 
+            placeholder="Search by ID, Name, Email or Course..." 
+            class="form-input-sm"
+        >
+        
+        <select name="year" class="form-select-sm" onchange="this.form.submit()">
+            <option value="">All Academic Years</option>
+            <option value="1" {% if year_filter == '1' %}selected{% endif %}>1st Year</option>
+            <option value="2" {% if year_filter == '2' %}selected{% endif %}>2nd Year</option>
+            <option value="3" {% if year_filter == '3' %}selected{% endif %}>3rd Year</option>
+            <option value="4" {% if year_filter == '4' %}selected{% endif %}>4th Year</option>
+            <option value="5" {% if year_filter == '5' %}selected{% endif %}>5th Year</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+        {% if query or year_filter %}
+            <a href="{% url 'student_list' %}" class="btn btn-secondary btn-sm">Clear Filters</a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Table -->
+<div class="glass-card" style="padding: 0; overflow: hidden;">
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Full Name</th>
+                    <th>Email Address</th>
+                    <th>Phone</th>
+                    <th>Course</th>
+                    <th>Year</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>
+                        <span class="badge badge-primary">{{ student.student_id }}</span>
+                    </td>
+                    <td>
+                        <strong style="color: var(--text-main);">{{ student.full_name }}</strong>
+                    </td>
+                    <td style="color: var(--text-muted);">{{ student.email }}</td>
+                    <td style="color: var(--text-muted);">{{ student.phone }}</td>
+                    <td>{{ student.course }}</td>
+                    <td>
+                        <span class="badge badge-info">{{ student.get_year_display }}</span>
+                    </td>
+                    <td>
+                        <div class="action-group">
+                            <a href="{% url 'student_detail' student.pk %}" class="btn btn-secondary btn-sm" title="View Profile">👁 View</a>
+                            <a href="{% url 'student_update' student.pk %}" class="btn btn-secondary btn-sm" title="Edit Student">✏️ Edit</a>
+                            <a href="{% url 'student_delete' student.pk %}" class="btn btn-danger btn-sm" title="Delete Student">🗑 Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">📂</div>
+                            <h3>No Students Found</h3>
+                            <p style="margin-top: 0.5rem; font-size: 0.9rem;">
+                                {% if query or year_filter %}
+                                    No records match your search criteria. Try clearing your filters.
+                                {% else %}
+                                    No student records exist in the database yet. Click below to add one!
+                                {% endif %}
+                            </p>
+                            {% if not query and not year_filter %}
+                                <a href="{% url 'student_create' %}" class="btn btn-primary" style="margin-top: 1rem;">+ Add First Student</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
